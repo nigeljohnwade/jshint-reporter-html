@@ -1,5 +1,5 @@
-// Author: Boy Baukema
-// http://github.com/relaxnow
+// Author: Nigel Wade, based on work by Boy Baukema
+// http://github.com/nigeljohnwade
 module.exports =
 {
     reporter: function (results, data, opts)
@@ -15,7 +15,11 @@ module.exports =
                 "<": "&lt;",
                 ">": "&gt;"
             },
-            fileName, i, issue, errorMessage;
+            fileName, 
+            i, 
+            issue, 
+            errorMessage, 
+            complexity = [];
 
         opts = opts || {};
 
@@ -34,38 +38,51 @@ module.exports =
             if (!files[result.file]) {
                 files[result.file] = [];
             }
-
             // Add the error
-            files[result.file].push({
-                error: result.error.id,
-                line: result.error.line,
-                column: result.error.character,
-                message: result.error.reason,
-                evidence: result.error.evidence,
-                code: result.error.code
-            });
+            if(result.error.code !== 'W074') {
+                files[result.file].push({
+                    error: result.error.id,
+                    line: result.error.line,
+                    column: result.error.character,
+                    message: result.error.reason,
+                    evidence: result.error.evidence,
+                    code: result.error.code
+                });
+           }else{
+                var currentComplexity = parseInt(result.error.reason.substring(result.error.reason.indexOf('(') + 1, result.error.reason.lastIndexOf(')')));
+                complexity.push(currentComplexity);
+           }
         });
-
-
-        out.push("<!DOCTYPE html><html><head><title>JS Hint</title></head><body><h1></h1>");
         
+        
+
+
+        out.push("<!DOCTYPE html><html><head><title>JSHint Results</title><style>label{display: block;cursor:pointer;}input{display: none}ol{display:none;}ul li :checked + ol{display:block;}</style></head><body><h1>JSHint Results</h1>");
+        if(complexity.length > 0) {
+            out.push("<p>Max complexity is " + Math.max.apply(Math, complexity) + "</p>");
+        }
         out.push("<ul>")
         for (fileName in files) {
             if (files.hasOwnProperty(fileName)) {
-                out.push("<h2>" + fileName + "</h2>");
-                out.push('<ol>');
-                for (i = 0; i < files[fileName].length; i++) {
-                    out.push('<li>');
-                    issue = files[fileName][i];
-                    var errorString = "<p>At line" + issue.line + ", char " + issue.column + "</p>" +
-                        //"<p>" + issue.error + " (" + issue.code + ")</p>" +
-                        "<p><code>" + issue.message + "</code> in " +
-                    "<code>" + issue.evidence + "</code></p>"
-                    out.push(errorString);
-                    out.push('</li>')
+                if(files[fileName].length> 0) {
+                    out.push("<li>");
+                    out.push("<label for='" + fileName.replace(/\\/g, '') + "'>" + fileName.replace(/\\/g, '') + " (" + files[fileName].length + ")</label>");
+                    out.push("<input type='checkbox' id='" + fileName.replace(/\\/g, '') + "'>");
+                    out.push('<ol>');
+                    for (i = 0; i < files[fileName].length; i++) {
+                        out.push('<li>');
+                        issue = files[fileName][i];
+                        var errorString = "<p>At line" + issue.line + ", char " + issue.column + "</p>" +
+                            "<p>" + issue.error + " (" + issue.code + ")</p>" +
+                            "<p><code>" + issue.message + "</code> in " +
+                            "<code>" + issue.evidence + "</code></p>"
+                        out.push(errorString);
+                        out.push('</li>');
+                    }
+                    out.push('</ol>');
+                    out.push('</li>');
+                    out.push("<hr>");
                 }
-                out.push('</ol>')
-                out.push("<hr>");
             }
         }
 
@@ -74,3 +91,4 @@ module.exports =
         console.log(out.join("\n"));
     }
 };
+
