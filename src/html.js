@@ -1,5 +1,6 @@
 // Author: Nigel Wade, based on work by Boy Baukema
 // http://github.com/nigeljohnwade
+
 module.exports =
 {
     reporter: function (results, data, opts)
@@ -59,9 +60,10 @@ module.exports =
 
         out.push("<!DOCTYPE html><html><head><title>JSHint Results</title><style>label{display: block;cursor:pointer;}input{display: none}ol{display:none;}ul li :checked + ol{display:block;}</style></head><body><h1>JSHint Results</h1>");
         if(complexity.length > 0) {
-            out.push("<p>Max complexity is " + Math.max.apply(Math, complexity) + "</p>");
+            out.push("<section><header><h2>Application Level</h2></header><p>Max complexity is " + Math.max.apply(Math, complexity) + "</p></section>");
         }
-        out.push("<ul>")
+        out.push("<section><header><h2>By File</h2></header>");
+        out.push("<ul>");
         for (fileName in files) {
             if (files.hasOwnProperty(fileName)) {
                 if(files[fileName].length> 0) {
@@ -73,7 +75,7 @@ module.exports =
                         out.push('<li>');
                         issue = files[fileName][i];
                         var errorString = "<p>At line" + issue.line + ", char " + issue.column + "</p>" +
-                            "<p>" + issue.error + " (" + issue.code + ")</p>" +
+                            //"<p>" + issue.error + " (" + issue.code + ")</p>" +
                             "<p><code>" + issue.message + "</code> in " +
                             "<code>" + issue.evidence + "</code></p>"
                         out.push(errorString);
@@ -85,6 +87,7 @@ module.exports =
                 }
             }
         }
+        out.push("</section>");
 
         out.push("</ul></body></html>");
 
