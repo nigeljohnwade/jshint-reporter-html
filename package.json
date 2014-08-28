@@ -1,10 +1,21 @@
 {
-        "name": "jshint-html-reporter"
-      , "description": "jshint reporter tat outputs HTML"
-      , "keywords": ["jshint", "reporter"]
-      , "author": "Nigel Wade"
-      , "contributors": ["Nigel Wade"]
-      , "lib"           : "."
-      , "main"          : "./src/html.js"
-      , "version"       : "0.1"
-    }
+  "name": "jshint-reporter-html",
+  "version": "0.0.0",
+  "description": "HTML reporter for jshint",
+  "main": "./src/html.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nigeljohnwade/jshint-reporter-html.git"
+  },
+  "keywords": [
+    "jshint"
+  ],
+  "author": "Nigel Wade",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nigeljohnwade/jshint-reporter-html/issues"
+  }
+}
