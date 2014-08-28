@@ -1,0 +1,10 @@
+{
+        "name": "jshint-html-reporter"
+      , "description": "jshint reporter tat outputs HTML"
+      , "keywords": ["jshint", "reporter"]
+      , "author": "Nigel Wade"
+      , "contributors": ["Nigel Wade"]
+      , "lib"           : "."
+      , "main"          : "./src/html.js"
+      , "version"       : "0.1"
+    }
