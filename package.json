@@ -2,7 +2,7 @@
   "name": "jshint-reporter-html",
   "version": "0.0.0",
   "description": "HTML reporter for jshint",
-  "main": "./src/html.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
